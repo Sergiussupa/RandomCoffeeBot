@@ -36,16 +36,20 @@ class UserRepository {
         return result.affectedRows;
     }
 
-    async showUsers() {
-        const result = await this.db.query('SELECT * FROM users');
-        return result;
-    }
-
     async showUser(telegramId) {
         try {
             const [ result ] = await this.db.query('SELECT * FROM users ' +
                                             'WHERE telegramId = ?', [telegramId]);
             return result[0];
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async showUsers() {
+        try {
+            const [ result ] = await this.db.query('SELECT * FROM users');
+            return result;
         } catch (err) {
             console.log(err);
         }

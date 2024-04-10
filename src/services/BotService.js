@@ -8,7 +8,7 @@ class BotService {
         this.mainController = new mainController(this.bot);
     }
 
-    init() {
+    async init() {
         const commands = [
             { command: "start", description: "Запуск бота" },
             { command: "profile", description: "Полюбоваться красавчиком" },
@@ -19,6 +19,8 @@ class BotService {
         this.bot.setMyCommands(commands);
         this.bot.on('message', (msg) => this.handleMessage(msg));
     }
+    
+        
 
     async handleMessage(msg) {
         this.mainController.getMsg(msg);

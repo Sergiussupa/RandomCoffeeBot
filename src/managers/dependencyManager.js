@@ -1,9 +1,9 @@
 const BotSingleton = require('../bot/botSingleton');
 const DBSingleton = require('../database/dbSingleton');
 const UserRepository = require('../database/userRepository');
-const UserCofResp = require('./database/userCofResp');
-const coffeController = require('./controllers/coffeController');
-//require('dotenv').config();
+const UserCofResp = require('../database/userCofResp');
+const CoffeController = require('../controllers/coffeController');
+const adminController = require('../controllers/adminController');
 
 class DependencyManager {
     constructor() {
@@ -11,12 +11,12 @@ class DependencyManager {
         this.db = DBSingleton.getInstance();
         this.userRep = new UserRepository(this.getDB());
         this.userCofRep = new UserCofResp(this.getDB());
-        //this.userRepository = new UserRepository(this.db);
+        this.coffeController = new CoffeController(this.getBot(), this); // Создание экземпляра с передачей бота и самого менеджера зависимостей
+        this.adminController = new adminController(this.getBot(), this);
     }
 
     getBot() {
-	    //console.log(process.env.TELEGRAM_TOKEN);
-	    return this.bot;
+        return this.bot;
     }
     getDB() {
         return this.db;
@@ -27,12 +27,14 @@ class DependencyManager {
     getUserCofRep() {
         return this.userCofRep;
     }
-
-    test() {
-        console.log('AAAAAAAAAAAAA');
+    getCoffeController() { // Метод для получения экземпляра coffeController
+        return this.coffeController;
+    }
+    getAdminController() {
+        return this.adminController;
     }
 
-    // Методы для получения экземпляров классов
+    // Остальная часть класса...
 }
 
 module.exports = new DependencyManager();
