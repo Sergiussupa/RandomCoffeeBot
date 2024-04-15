@@ -35,6 +35,17 @@ class CoffeController {
                     case 3:
                         this.bot.send(userId, 'Еще ничего не произошло. \nЖдем-с...');
                         //await this.userCofRep.updateAtr(userId, 'currState', 4);
+                        break;
+                    case 4:
+                        // Получаем информацию о собеседнике в той же комнате
+                        let roommate = await this.userCofRep.getRoommate(userId, result.roomId);
+                        if (roommate) {
+                            // Пересылаем сообщение собеседнику
+                            this.bot.sendMessage(roommate.telegramId, `Сообщение от ${result.name || 'анонима'}:\n ${text}`);
+                        } else {
+                            this.bot.sendMessage(userId, 'У вас нет собеседника в комнате.');
+                        }
+                        break;
                 }
             }
             // Логика обработки сообщений...

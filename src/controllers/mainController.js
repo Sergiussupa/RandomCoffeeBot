@@ -9,6 +9,7 @@ class MainController {
     async getMsg(msg) {
         try {
             let userId = msg.from.id;
+
             //console.log(msg);
             let res = await this.userRep.showUser(msg.from.id);
             if (res == undefined) {

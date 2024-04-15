@@ -35,7 +35,7 @@ class UserCofResp {
 
     async updateAtr(telegramId, atr, val) {
         try {
-            if (atr == 'currState' || atr == 'lastState' || atr == 'name') {
+            if (atr == 'currState' || atr == 'lastState' || atr == 'name' || atr == 'roomId') {
                 await this.db.query('UPDATE coffeeUsers SET ' +
                                     `${atr} = ? ` +
                                     'WHERE telegramId = ?', [val, telegramId]);
@@ -62,6 +62,19 @@ class UserCofResp {
             return result[0].max_room_id;
         } catch (err) {
             console.log(err);
+        }
+    }
+
+    async getRoommate(userId, roomId) {
+        try {
+            const [result] = await this.db.query(
+                'SELECT * FROM coffeeUsers WHERE roomId = ? AND telegramId != ?',
+                [roomId, userId]
+            );
+            return result.length > 0 ? result[0] : null; // возвращаем первого найденного пользователя
+        } catch (err) {
+            console.log(err);
+            return null;
         }
     }
 

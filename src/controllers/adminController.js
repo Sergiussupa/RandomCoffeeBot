@@ -93,6 +93,8 @@ class Admin {
                 // Обновляем roomId для обоих пользователей в базе данных
                 await this.userCofRep.updateAtr(user1.telegramId, 'roomId', count);
                 await this.userCofRep.updateAtr(user2.telegramId, 'roomId', count);
+                await this.userCofRep.updateAtr(user1.telegramId, 'currState', 4);
+                await this.userCofRep.updateAtr(user2.telegramId, 'currState', 4);
                 count++;
     
             }
