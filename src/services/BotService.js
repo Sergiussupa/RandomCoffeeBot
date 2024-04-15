@@ -11,9 +11,9 @@ class BotService {
     async init() {
         const commands = [
             { command: "start", description: "Запуск бота" },
-            { command: "profile", description: "Полюбоваться красавчиком" },
-            { command: "clear", description: "Заполнить профайл заново" },
-            { command: "likes", description: "Проверить количество лайков" }
+            { command: "leave", description: "Покинуть комнату" },
+            /*{ command: "clear", description: "Заполнить профайл заново" },
+            { command: "likes", description: "Проверить количество лайков" }*/
         ];
 
         this.bot.setMyCommands(commands);

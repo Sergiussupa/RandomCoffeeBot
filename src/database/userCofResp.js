@@ -78,6 +78,25 @@ class UserCofResp {
         }
     }
 
+    async clearRoomAndReturnUsers(roomId) {
+        try {
+            // Шаг 1: Получение всех пользователей с указанным roomId
+            const [users] = await this.db.query('SELECT * FROM coffeeUsers WHERE roomId = ?', [roomId]);
+
+            // Шаг 2: Проверка, есть ли пользователи для обновления
+            if (users.length > 0) {
+                // Шаг 3: Обновление roomId на NULL и currState на 3
+                await this.db.query('UPDATE coffeeUsers SET roomId = NULL, currState = 3 WHERE roomId = ?', [roomId]);
+            }
+
+            // Шаг 4: Возврат списка пользователей, которые были в комнате
+            return users;
+        } catch (err) {
+            console.error('Ошибка при очистке комнаты:', err);
+            throw err; // Переброс ошибки для обработки на более высоком уровне
+        }
+    }
+
     async test(text) {
         console.log(text);
     }

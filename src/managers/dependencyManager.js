@@ -4,6 +4,7 @@ const UserRepository = require('../database/userRepository');
 const UserCofResp = require('../database/userCofResp');
 const CoffeController = require('../controllers/coffeController');
 const adminController = require('../controllers/adminController');
+const leaveController = require('../controllers/leaveController');
 
 class DependencyManager {
     constructor() {
@@ -13,6 +14,7 @@ class DependencyManager {
         this.userCofRep = new UserCofResp(this.getDB());
         this.coffeController = new CoffeController(this.getBot(), this); // Создание экземпляра с передачей бота и самого менеджера зависимостей
         this.adminController = new adminController(this.getBot(), this);
+        this.leaveController = new leaveController(this.getBot(), this);
     }
 
     getBot() {
@@ -32,6 +34,10 @@ class DependencyManager {
     }
     getAdminController() {
         return this.adminController;
+    }
+    getLeaveController() {
+        console.log('LOH');
+        return this.leaveController;
     }
 
     // Остальная часть класса...
