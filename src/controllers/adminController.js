@@ -11,7 +11,8 @@ class Admin {
                 case 90:
                     let greeting = 'Посмотреть пользователей: <b>1</b>\n' +
                     'Посмотреть количество активных комнат: <b>2</b>\n' +
-                    'Собрать активных пользователей в комнаты комнаты <b>3</b>';
+                    'Собрать активных пользователей в комнаты комнаты <b>3</b>\n' +
+                    'Посмотреть количество фидбеков <b>4</b>';
 
                     this.bot.send(userId, greeting, [['1', '2', '3', '4']], "HTML");
                     await this.userRep.updateAtr(userId, 'currState', 91);
@@ -26,8 +27,8 @@ class Admin {
 
                             this.bot.send(userId, result1.length + ' пользователя без имени\n' +
                                                             result2.length + ' пользователей с именем\n' +
-                                                            result3.length + ' пользователя ждут комнату',
-                                                            [['1', '2', '3']]);
+                                                            result3.length + ' пользователя ждут комнату'
+                                                            [['1', '2', '3', '4']]);
                             break;
                         case '2':
                             let result4 = await this.userCofRep.getMaxRoomId();
