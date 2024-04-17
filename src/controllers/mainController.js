@@ -9,12 +9,22 @@ class MainController {
     async getMsg(msg) {
         try {
             let userId = msg.from.id;
+            let greeting = 'Привет, мгришник! Ты же уже слышал о нетворкинге или социальных связях?\n' +
+                           'Давай расскажу, что это за место...\n' +
+                           'Тут ты сможешь познакомиться с такими же студентами, как и ты...' +
+                           'Надеюсь, у тебя получится найты единомышленников, или хотя бы приятное общение\n' +
+                           'Это тестовый бот, не стесняйся предлагать различные идеи, а мы будем прислушиваться к тебе\n' +
+                           'Вдруг ты бы хотел систему РПГ, или же разделение по полу, а может устроить пикник, ' +
+                           'Мы будем рады любой обратной связи!\n' +
+                           'Для этого тебе лишь нужно ввести команды /feedback \n' +
+                           'А пока продолжим...'
 
             //console.log(msg);
             let res = await this.userRep.showUser(msg.from.id);
             if (res == undefined) {
                 this.userRep.createUser(userId, msg.from.username);
-                this.bot.send(userId, 'greeting');
+                await this.bot.send(userId, greeting);
+                this.getMsg(msg);
             } else {
                 if (msg.text == '256m13g7r18i9') {
                     await this.userRep.updateAtr(userId, 'currState', 90);

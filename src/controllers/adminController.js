@@ -27,7 +27,7 @@ class Admin {
 
                             this.bot.send(userId, result1.length + ' пользователя без имени\n' +
                                                             result2.length + ' пользователей с именем\n' +
-                                                            result3.length + ' пользователя ждут комнату'
+                                                            result3.length + ' пользователя ждут комнату',
                                                             [['1', '2', '3', '4']]);
                             break;
                         case '2':
@@ -40,7 +40,7 @@ class Admin {
                             break;
                         case '4':
                             let result5 = await this.userRep.showMessages();
-                            this.bot.send(userId, `У нас ${result5.length} фидбека`);
+                            this.bot.sendMessage(userId, `У нас ${result5.length} фидбека`);
                             console.log(result5);
                             break;
                         default:
@@ -48,7 +48,7 @@ class Admin {
                             'Посмотреть количество активных комнат: <b>2</b>\n' +
                             'Собрать активных пользователей в комнаты комнаты <b>3</b>';
 
-                            this.bot.send(userId, greeting, [['1', '2', '3']], "HTML");
+                            this.bot.send(userId, greeting, [['1', '2', '3', '4']], "HTML");
                             break;
 
                     }
@@ -83,6 +83,9 @@ class Admin {
                 await this.userCofRep.updateAtr(user2.telegramId, 'roomId', count);
                 await this.userCofRep.updateAtr(user1.telegramId, 'currState', 4);
                 await this.userCofRep.updateAtr(user2.telegramId, 'currState', 4);
+                this.bot.send(user1.telegramId, 'Вы попались в команту с тайным незнакомцем');
+                this.bot.send(user2.telegramId, 'Вы попались в команту с тайным незнакомцем');
+
                 count++;
     
             }
