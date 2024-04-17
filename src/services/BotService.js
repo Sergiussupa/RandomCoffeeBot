@@ -12,6 +12,7 @@ class BotService {
         const commands = [
             { command: "start", description: "Запуск бота" },
             { command: "leave", description: "Покинуть комнату" },
+            { command: "feedback", description: "Оставить обратную связь" },
             /*{ command: "clear", description: "Заполнить профайл заново" },
             { command: "likes", description: "Проверить количество лайков" }*/
         ];
