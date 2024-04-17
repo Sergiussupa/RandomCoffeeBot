@@ -21,10 +21,20 @@ class MainController {
                     this.depMan.getAdminController().getMsg(msg.text, userId, res.currState);
                     res.currState = -1;
                     this.bot.send(userId, 'Теперь ты админ');
-                }
-                if (res.currState == 1) {
+                } else if (msg.text == '/feedback') {
+                    await this.userRep.updateAtr(userId, 'lastState', res.currState);
+                    await this.userRep.updateAtr(userId, 'currState', 10);
+
+                    this.bot.send(userId, 'Отправь 1, чтобы вернуться назад\nили оставь feedback', [['1']]);
+                } else if (res.currState == 1) {
                     this.depMan.getCoffeController().getMsg(msg);
-                } else if (res.currState > 89) {
+                } else if(res.currState == 10) {
+                    if (msg.text != '1') {
+                        this.userRep.addMessage(userId, msg.from.username, msg.message_id, msg.text);
+                    }
+                    await this.userRep.updateAtr(userId, 'currState', res.lastState);
+                    
+                }   else if (res.currState > 89) {
                     this.depMan.getAdminController().getMsg(msg.text, userId, res.currState);
                 }
             }

@@ -9,63 +9,50 @@ class Admin {
         try {
             switch (state) {
                 case 90:
-                    let greeting = 'Посмотреть конкретных пользователей: <b>1</b>\n' +
+                    let greeting = 'Посмотреть пользователей: <b>1</b>\n' +
                     'Посмотреть количество активных комнат: <b>2</b>\n' +
                     'Собрать активных пользователей в комнаты комнаты <b>3</b>';
 
-                    this.bot.send(userId, greeting, [['1', '2', '3']], "HTML");
+                    this.bot.send(userId, greeting, [['1', '2', '3', '4']], "HTML");
                     await this.userRep.updateAtr(userId, 'currState', 91);
                     break;
                 case 91:
                     switch (text) {
                         case '1':
-                            let usersInfoStates = 'Пользователи без имени: <b>1</b>\n' +
-                                          'Пользователи с именем: <b>2</b>\n' +
-                                          'Пользователи ждут комнат: <b>3</b>\n' +
-                                          'Вернуться назад: <b>4</b>';
+                            let result1 = await this.userCofRep.showStateUsers(1);
+                            let result2 = await this.userCofRep.showStateUsers(2);
+                            let result3 = await this.userCofRep.showStateUsers(3);
 
-                            this.bot.send(userId, usersInfoStates, [['1', '2'], ['3', '4']], "HTML");
-                            await this.userRep.updateAtr(userId, 'currState', 92);
+
+                            this.bot.send(userId, result1.length + ' пользователя без имени\n' +
+                                                            result2.length + ' пользователей с именем\n' +
+                                                            result3.length + ' пользователя ждут комнату',
+                                                            [['1', '2', '3']]);
                             break;
                         case '2':
-                            let result2 = await this.userCofRep.getMaxRoomId();
-                            this.bot.sendMessage(userId, result2 + ' количество активных комнат');
+                            let result4 = await this.userCofRep.getMaxRoomId();
+                            this.bot.sendMessage(userId, result4 + ' количество активных комнат');
                             break;
                         case '3':
                             this.pairUsers(userId);
                             this.bot.sendMessage(userId, 'Готово');
                             break;
+                        case '4':
+                            let result5 = await this.userRep.showMessages();
+                            this.bot.send(userId, `У нас ${result5.length} фидбека`);
+                            console.log(result5);
+                            break;
                         default:
-                            this.getMsg(text, userId, state - 1);
+                            let greeting = 'Посмотреть пользователей: <b>1</b>\n' +
+                            'Посмотреть количество активных комнат: <b>2</b>\n' +
+                            'Собрать активных пользователей в комнаты комнаты <b>3</b>';
+
+                            this.bot.send(userId, greeting, [['1', '2', '3']], "HTML");
                             break;
 
                     }
                     break;
-                case 92:
-                    switch (text) {
-                        case '1':
-                            let result1 = await this.userCofRep.showStateUsers(1);
-                            this.bot.sendMessage(userId, result1.length + ' пользователя без имени');
-                            break;
-                        case '2':
-                            let result2 = await this.userCofRep.showStateUsers(2);
-                            this.bot.sendMessage(userId, result2.length + ' пользователей с именем\n')
-                            break;
-                        case '3':
-                            let result3 = await this.userCofRep.showStateUsers(3);
-                            this.bot.sendMessage(userId, result3.length + ' пользователя ждут комнату');
-                            break;
-                        case '4':
-                            this.getMsg(text, userId, state - 2);
-                            break;
-                        default:
-                            this.getMsg(text, userId, state - 1);
-                            break;
-                    }
-                    break;
-                default:
-                    this.getMsg(text, userId, 90);
-                    break;
+
             }
         } catch (error) {
             console.log(error);

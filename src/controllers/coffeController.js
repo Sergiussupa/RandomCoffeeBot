@@ -16,8 +16,12 @@ class CoffeController {
                 this.bot.sendMessage(userId, 'Вижу, тебя еще нет в моих заметках.\n' +
                                       'Нужно с тобой познакомиться, как тебя зовут?');
             } else {
-                if (msg.text == '/leave') {
-                    this.depMan.getLeaveController().getMsg(msg, result.roomId);
+                if (msg.text == '/leave' || msg.text == '/rename') {
+                    switch (msg.text) {
+                        case '/leave':
+                            this.depMan.getLeaveController().getMsg(msg, result.roomId);
+                            break;
+                    }
                 } else {
                     switch (result.currState) {
                         case 1:

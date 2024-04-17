@@ -54,6 +54,24 @@ class UserRepository {
             console.log(err);
         }
     }
+
+    async addMessage(telegramId, login, idMsg, text) {
+        try {
+            await this.db.query('INSERT INTO messages (telegramId, login, idMessage, text) ' +
+                                            'VALUES (?, ?, ?, ?)', [telegramId, login, idMsg, text]);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async showMessages() {
+        try {
+            const [ result ] = await this.db.query('SELECT * FROM messages');
+            return result;
+        } catch (err) {
+            console.log(err);
+        }
+    }
     // Методы для извлечения данных (по id, все сущности и т.д.)
 }
 
