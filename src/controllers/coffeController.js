@@ -28,10 +28,10 @@ class CoffeController {
                             await this.userCofRep.updateAtr(userId, 'name', text);
                             await this.userCofRep.updateAtr(userId, 'currState', 2);
                             this.bot.send(userId, `То есть ты у нас <b>${text}</b>, верно?\n` +
-                                                  'Отправь 1, если да', [['1']], "HTML");
+                                                  'Отправь да, если все правильно', [['да']], "HTML");
                             break;
                         case 2:
-                            if (text == 1) {
+                            if (text == 'да') {
                                 await this.userCofRep.updateAtr(userId, 'currState', 3);
                                 this.bot.send(userId, 'Все сделанно. Осталось ждать часа кХм...');
                             } else {

@@ -25,12 +25,12 @@ class LinkedListQueue {
             this.tail.next = newNode;
             this.tail = newNode;
         }
-        console.log(`Enqueued: ${description}`);
+        //console.log(`Enqueued: ${description}`);
     }
 
     dequeue() {
         if (!this.head) {
-            console.log("Attempt to dequeue from an empty queue");
+            //console.log("Attempt to dequeue from an empty queue");
             return null;
         }
         const node = this.head;
@@ -38,7 +38,7 @@ class LinkedListQueue {
         if (!this.head) {
             this.tail = null;
         }
-        console.log(`Dequeued: ${node.description}`);
+        //console.log(`Dequeued: ${node.description}`);
         return node.value;
     }
 
@@ -65,20 +65,20 @@ class BotSingleton {
         };
         const description = `Request: ${messageId ? "Edit message" : "Send message"} to ${id}`;
         BotSingleton.getInstance().queue.enqueue(() => BotSingleton.processRequest(id, text, options, messageId), description);
-        console.log(`Request enqueued: ${description}`);
+        //console.log(`Request enqueued: ${description}`);
     }
 
     static async processRequest(id, text, options, messageId) {
         try {
             if (messageId) {
-                console.log(`Editing message ${messageId} for ${id}`);
+                //console.log(`Editing message ${messageId} for ${id}`);
                 await BotSingleton.getInstance().editMessageText(text, { chat_id: id, message_id: messageId, ...options });
             } else {
-                console.log(`Sending new message to ${id}`);
+                //console.log(`Sending new message to ${id}`);
                 await BotSingleton.getInstance().sendMessage(id, text, options);
             }
         } catch (error) {
-            console.error(`Error in processing request for ${id}:`, error);
+            //console.error(`Error in processing request for ${id}:`, error);
         }
     }
 

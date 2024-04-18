@@ -8,6 +8,7 @@ class MainController {
     }
     async getMsg(msg) {
         try {
+            console.log(msg);
             let userId = msg.from.id;
             let greeting = 'Привет, мгришник! Ты же уже слышал о нетворкинге или социальных связях?\n' +
                            'Давай расскажу, что это за место...\n' +
@@ -16,6 +17,7 @@ class MainController {
                            'Это тестовый бот, не стесняйся предлагать различные идеи, а мы будем прислушиваться к тебе\n' +
                            'Вдруг ты бы хотел систему РПГ, или же разделение по полу, а может устроить пикник, ' +
                            'Мы будем рады любой обратной связи!\n' +
+                           'Особенно, если что то сломается в шнашем боте!\n' +
                            'Для этого тебе лишь нужно ввести команды /feedback \n' +
                            'А пока продолжим...\nДля этого тебе нужно отправить любое сообщение'
 
@@ -40,6 +42,7 @@ class MainController {
                 } else if(res.currState == 10) {
                     if (msg.text != '1') {
                         this.userRep.addMessage(userId, msg.from.username, msg.message_id, msg.text);
+                        this.bot.send(userId, 'Спасибо за фидбек!');
                     }
                     await this.userRep.updateAtr(userId, 'currState', res.lastState);
                     
