@@ -25,7 +25,7 @@ class UserCofResp {
 
     async showStateUsers(currState) {
         try {
-            const [ result ] = await this.db.query('SELECT * FROM coffeeUsers ' +
+            const [ result ] = await this.db.query('SELECT telegramId FROM coffeeUsers ' +
                                             'WHERE currState = ?', [currState]);
             return result;
         } catch (err) {

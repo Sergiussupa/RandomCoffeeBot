@@ -55,15 +55,6 @@ class UserRepository {
         }
     }
 
-    async addMessage(telegramId, login, idMsg, text) {
-        try {
-            await this.db.query('INSERT INTO messages (telegramId, login, idMessage, text) ' +
-                                            'VALUES (?, ?, ?, ?)', [telegramId, login, idMsg, text]);
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
     async showMessages() {
         try {
             const [ result ] = await this.db.query('SELECT * FROM messages');

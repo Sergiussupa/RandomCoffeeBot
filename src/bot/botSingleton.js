@@ -83,8 +83,10 @@ class BotSingleton {
     }
 
     static addKeyboard(keyboard) {
-        if (!keyboard || keyboard === -1) {
+        if (!keyboard) {
             return { reply_markup: { remove_keyboard: true } };
+        } else if(keyboard == -1) {
+            return {};
         } else {
             return { reply_markup: { keyboard } };
         }

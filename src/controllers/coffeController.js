@@ -40,7 +40,10 @@ class CoffeController {
                             }
                             break;
                         case 3:
-                            this.bot.send(userId, 'Еще ничего не произошло. \nЖдем-с...');
+                            this.bot.send(userId, 'Пары создаются раз в определенный период\n' +
+                                                  'Бот работает, прочитайте самое первое сообщение\n' +
+                                                  'Вы можете влиять на функционал бота, если будете оставлять обратную связь\n' +
+                                                  '\nПока что ждем-с...');
                             //await this.userCofRep.updateAtr(userId, 'currState', 4);
                             break;
                         case 4:
@@ -60,9 +63,23 @@ class CoffeController {
             // Логика обработки сообщений...
             return flag;
         } catch (error) {
+            //await this.handleSendError(userId, error);
             console.log(error);
         }
     }
+    async handleSendError(userId, error) {
+        try {
+            if (error.response && error.response.statusCode === 403) {
+                console.error(`Access denied: The bot was blocked by the user ${userId}.`);
+                //await this.userRep.updateAtr(userId, 'currState', -1);
+                await this.userCofRep.updateAtr(userId, 'currState', -1)
+            } else {
+                console.error(`Error sending message to user ${userId}:`, error);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }   
 }
 
 module.exports = CoffeController;

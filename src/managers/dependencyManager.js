@@ -2,6 +2,7 @@ const BotSingleton = require('../bot/botSingleton');
 const DBSingleton = require('../database/dbSingleton');
 const UserRepository = require('../database/userRepository');
 const UserCofResp = require('../database/userCofResp');
+const MessagesRep = require('../database/messagesRep');
 const CoffeController = require('../controllers/coffeController');
 const adminController = require('../controllers/adminController');
 const leaveController = require('../controllers/leaveController');
@@ -12,6 +13,7 @@ class DependencyManager {
         this.db = DBSingleton.getInstance();
         this.userRep = new UserRepository(this.getDB());
         this.userCofRep = new UserCofResp(this.getDB());
+        this.mesRep = new MessagesRep(this.getDB());
         this.coffeController = new CoffeController(this.getBot(), this); // Создание экземпляра с передачей бота и самого менеджера зависимостей
         this.adminController = new adminController(this.getBot(), this);
         this.leaveController = new leaveController(this.getBot(), this);
@@ -28,6 +30,9 @@ class DependencyManager {
     }
     getUserCofRep() {
         return this.userCofRep;
+    }
+    getMesfRep() {
+        return this.mesRep;
     }
     getCoffeController() { // Метод для получения экземпляра coffeController
         return this.coffeController;
