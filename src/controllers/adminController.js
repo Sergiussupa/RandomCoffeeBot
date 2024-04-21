@@ -6,6 +6,7 @@ class Admin {
         this.userCofRep = this.depMan.getUserCofRep(); // Получение репозитория пользователя через менеджер
         this.mesRep = this.depMan.getMesfRep();
         this.pollsRep = this.depMan.getPollsRep();
+        this.responsRep = this.depMan.getResponsRep();
         this.count = 1;
         this.respId;
     }
@@ -18,9 +19,10 @@ class Admin {
                     'Собрать активных пользователей в комнаты комнаты <b>3</b>\n' +
                     'Посмотреть количество фидбеков <b>4</b>\n' +
                     'Отправить сообщение для всех <b>5</b>\n' +
-                    'Создать пулл <b>6</b>';
+                    'Создать пулл <b>6</b>\n' +
+                    'Посмотреть ответы на опрос <b>7</b>';
 
-                    this.bot.send(userId, greeting, [['1', '2', '3'], ['4', '6']], "HTML");
+                    this.bot.send(userId, greeting, [['1', '2', '3'], ['4', '6', '7']], "HTML");
                     await this.userRep.updateAtr(userId, 'currState', 91);
                     break;
                 case 91:
@@ -64,6 +66,15 @@ class Admin {
                             this.bot.send(userId, 'Введи голосование, на которое ответят, или нажми <b>назад</b>',
                                                   [['назад']], "HTML");
                             break;
+                        case '7':
+                            let result7 = await this.responsRep.showAllRespons();
+                            this.bot.send(userId, (`У нас ${result7.length} ответов\n` +
+                                                         'Хочешь прочитать их? Введи номер, который хочешь посмотреть\n' +
+                                                         'Вернутсья назад, введи <b>назад</b>'),
+                                                         [['назад']], "HTML");
+                            await this.userRep.updateAtr(userId, 'currState', 120);
+                            break;
+
 
 
                         default:
@@ -148,6 +159,18 @@ class Admin {
                     } else {
                         await this.pollsRep.addPoll(text);
                         this.bot.send(userId, 'Ты добавил "' + text + '" как голосование');
+                        this.getMsg(text, userId, 90);
+                    }
+                    break;
+                case 120:
+                    if (text == 'назад') {
+                        this.getMsg(text, userId, 90);
+                    } else if (isNaN(text)) {
+                        this.bot.send(userId, 'Тебе нужно ввести число', -1);
+                    } else {
+                        let result5 = await this.responsRep.checkCurrentRespons(+text);
+
+                        this.bot.send(userId, result5.text);
                         this.getMsg(text, userId, 90);
                     }
                     break;
