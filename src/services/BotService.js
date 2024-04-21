@@ -13,6 +13,7 @@ class BotService {
             { command: "start", description: "Запуск бота" },
             { command: "leave", description: "Покинуть комнату" },
             { command: "feedback", description: "Оставить обратную связь" },
+            { command: "polls", description: "Поучавствоваться в опросе" },
             /*{ command: "clear", description: "Заполнить профайл заново" },
             { command: "likes", description: "Проверить количество лайков" }*/
         ];

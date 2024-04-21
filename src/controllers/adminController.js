@@ -5,6 +5,7 @@ class Admin {
         this.userRep = this.depMan.getUserRep();
         this.userCofRep = this.depMan.getUserCofRep(); // Получение репозитория пользователя через менеджер
         this.mesRep = this.depMan.getMesfRep();
+        this.pollsRep = this.depMan.getPollsRep();
         this.count = 1;
         this.respId;
     }
@@ -16,9 +17,10 @@ class Admin {
                     'Посмотреть количество активных комнат: <b>2</b>\n' +
                     'Собрать активных пользователей в комнаты комнаты <b>3</b>\n' +
                     'Посмотреть количество фидбеков <b>4</b>\n' +
-                    'Отправить сообщение для всех <b>5</b>';
+                    'Отправить сообщение для всех <b>5</b>\n' +
+                    'Создать пулл <b>6</b>';
 
-                    this.bot.send(userId, greeting, [['1', '2'], ['3', '4']], "HTML");
+                    this.bot.send(userId, greeting, [['1', '2', '3'], ['4', '6']], "HTML");
                     await this.userRep.updateAtr(userId, 'currState', 91);
                     break;
                 case 91:
@@ -27,13 +29,14 @@ class Admin {
                             let result1 = await this.userCofRep.showStateUsers(1);
                             let result2 = await this.userCofRep.showStateUsers(2);
                             let result3 = await this.userCofRep.showStateUsers(3);
-                            console.log(result3);
+                            let result44 = await this.userCofRep.showStateUsers(4);
+                            //console.log(result3);
 
 
                             this.bot.send(userId, result1.length + ' пользователя без имени\n' +
                                                             result2.length + ' пользователей с именем\n' +
-                                                            result3.length + ' пользователя ждут комнату',
-                                                            [['1', '2'], ['3', '4']]);
+                                                            result3.length + ' пользователя ждут комнату\n' +
+                                                            result44.length + ' пользователей общается в комнате', -1);
                             break;
                         case '2':
                             let result4 = await this.userCofRep.getMaxRoomId();
@@ -56,16 +59,15 @@ class Admin {
                                                   '\nИли отправь назад', [['назад']]);
                             await this.userRep.updateAtr(userId, 'currState', 100);
                             break;
+                        case '6':
+                            await this.userRep.updateAtr(userId, 'currState', 110);
+                            this.bot.send(userId, 'Введи голосование, на которое ответят, или нажми <b>назад</b>',
+                                                  [['назад']], "HTML");
+                            break;
 
 
                         default:
-                            let greeting = 'Посмотреть пользователей: <b>1</b>\n' +
-                            'Посмотреть количество активных комнат: <b>2</b>\n' +
-                            'Собрать активных пользователей в комнаты комнаты <b>3</b>\n' +
-                            'Посмотреть количество фидбеков <b>4</b>\n' +
-                            'Отправить сообщение для всех <b>5</b>';
-
-                            this.bot.send(userId, greeting, [['1', '2'], ['3', '4']], "HTML");
+                            this.getMsg(text, userId, 90);
                             break;
 
                     }
@@ -73,8 +75,6 @@ class Admin {
                 case 92:
                     if (text == 'назад') {
                         this.getMsg(text, userId, 90);
-
-                        await this.userRep.updateAtr(userId, 'currState', 91);
                     } else if (text == 'да') {
                         let result5 = await this.userRep.showMessages();
                         this.bot.send(userId, 'Введи число сообщения, которое хочешь посмотреть\n' +
@@ -92,7 +92,6 @@ class Admin {
                 case 93:
                     if ( text == 'назад') {
                         this.getMsg(text, userId, 90);
-                        await this.userRep.updateAtr(userId, 'currState', 91);
                     } else if (isNaN(+text)) {
 
                     } else {
@@ -116,9 +115,7 @@ class Admin {
                         await this.userRep.updateAtr(userId, 'currState', 95);
                         this.bot.send(userId, 'Отправь свой ответ, которое увидит тот пользователь');
                     } else {
-                        this.getMsg(text, userId, 90);
-                        await this.userRep.updateAtr(userId, 'currState', 91);
-                    }
+                        this.getMsg(text, userId, 90);                    }
                     break;
                 case 95:
                     this.bot.sendMessage(this.respId, 'Ответ на твой фидбек\n' + text +
@@ -128,9 +125,7 @@ class Admin {
                     break;
                 case 100:
                     if (text == 'назад') {
-                        this.getMsg(text, userId, 90);
-                        await this.userRep.updateAtr(userId, 'currState', 91);
-                    } else {
+                        this.getMsg(text, userId, 90);                    } else {
                         let result100 = await this.userCofRep.showStateUsers(3);
                         let result101 = await this.userCofRep.showStateUsers(4);
                         for (let i = 0; i < result100.length; i++) {
@@ -145,7 +140,15 @@ class Admin {
 
                         this.bot.send(userId, 'Всем отправили - ' + text);
                         this.getMsg(text, userId, 90);
-                        await this.userRep.updateAtr(userId, 'currState', 91);
+                    }
+                    break;
+                case 110:
+                    if(text == 'назад') {
+                        this.getMsg(text, userId, 90);
+                    } else {
+                        await this.pollsRep.addPoll(text);
+                        this.bot.send(userId, 'Ты добавил "' + text + '" как голосование');
+                        this.getMsg(text, userId, 90);
                     }
                     break;
 

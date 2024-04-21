@@ -51,7 +51,7 @@ class CoffeController {
                             let roommate = await this.userCofRep.getRoommate(userId, result.roomId);
                             if (roommate) {
                                 // Пересылаем сообщение собеседнику
-                                this.bot.sendMessage(roommate.telegramId, `Сообщение от ${result.name || 'анонима'}:\n ${text}`);
+                                this.bot.sendMessage(roommate.telegramId, `Сообщение от ${result.name || 'анонима'}:\n\n ${text}`);
                             } else {
                                 this.bot.sendMessage(userId, 'У вас нет собеседника в комнате.');
                             }
