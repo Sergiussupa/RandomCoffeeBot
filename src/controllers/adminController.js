@@ -139,6 +139,7 @@ class Admin {
                         this.getMsg(text, userId, 90);                    } else {
                         let result100 = await this.userCofRep.showStateUsers(3);
                         let result101 = await this.userCofRep.showStateUsers(4);
+                        let result102 = await this.userCofRep.showStateUsers(1);
                         for (let i = 0; i < result100.length; i++) {
                             //console.log(result100[i]);
                             this.bot.send(result100[i].telegramId, 'Сообщение для всех\n' + text, -1);
@@ -147,6 +148,10 @@ class Admin {
                         for (let i = 0; i < result101.length; i++) {
                             //console.log(result100[i]);
                             this.bot.send(result101[i].telegramId, 'Сообщение для всех\n' + text, -1);
+                        }
+                        for (let i = 0; i < result102.length; i++) {
+                            //console.log(result100[i]);
+                            this.bot.send(result102[i].telegramId, 'Сообщение для всех\n' + text, -1);
                         }
 
                         this.bot.send(userId, 'Всем отправили - ' + text);
@@ -200,7 +205,7 @@ class Admin {
             let usersReady = await this.userCofRep.showStateUsers(3);
 
             usersReady = this.shuffleArray(usersReady);
-            let count = 1;
+            let count = await this.userCofRep.getMaxRoomId() + 1;
             
             // Шаг 2: Создание пар пользователей
             for (let i = 0; i < usersReady.length; i += 2) {
